@@ -4,6 +4,8 @@
  * Aleatorio con semilla (LCG): misma semilla, misma ciudad, siempre
  * ================================================================================================== */
 
+'use strict';
+
 let seed = 1993;
 const rnd = () => {
   seed = (seed * 1664525 + 1013904223) >>> 0;

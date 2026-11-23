@@ -6,6 +6,8 @@
  * Disparos y daño: fuego directo y de supresión, sangre, damage() y las explosiones.
  * ================================================================================================== */
 
+'use strict';
+
 function fireAt(s, t) {
   addNoise(s.x, s.z, 24);
   const d = dist(s, t);

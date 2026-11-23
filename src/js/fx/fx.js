@@ -7,6 +7,8 @@
  * y el bucle que los anima (updFx).
  * ================================================================================================== */
 
+'use strict';
+
 const trMat = {};
 const trM = c =>
   trMat[c] ||

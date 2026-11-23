@@ -6,6 +6,8 @@
  * El contexto de audio (Web Audio) y su arranque.
  * ================================================================================================== */
 
+'use strict';
+
 let AC = null,
   noiseBuf = null,
   soundOn = true,

@@ -5,6 +5,8 @@
  * boca arriba antes de poder levantarse y volver a disparar
  * ================================================================================================== */
 
+'use strict';
+
 const KD_T = 10,
   KD_R = 4; // diez segundos en el suelo para todo el que esté a menos de seis metros (4 unidades de mapa) de la explosión
 function knockDown(u, x, z) {

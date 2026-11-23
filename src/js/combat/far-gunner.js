@@ -6,6 +6,8 @@
  * la esquina), suelta un montón de escombro y tira al suelo a todos los que están a menos de seis metros (KD_R).
  * ================================================================================================== */
 
+'use strict';
+
 function farRpgTick(dt) {
   if (
     !G ||

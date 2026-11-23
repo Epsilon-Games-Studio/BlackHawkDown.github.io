@@ -10,6 +10,8 @@
  * como nombre_2, nombre_3), se cargan y se usan en lugar de los sonidos construidos.
  * ================================================================================================== */
 
+'use strict';
+
 let SND = null,
   SMP = {},
   sndTried = false,
@@ -102,43 +104,53 @@ const ar = (a, b) => a + Math.random() * (b - a),
   ap = a => a[ai(a.length)];
 const SB = {}; // clips decodificados: buf, sh (adelanto del decodificador), r (inicios de disparo), t (inicio de la cola), s (trozos), loop
 let SB_LOOPS = 0;
+const SFX_RAW = {};
+const SFX_PROM = fetch('assets/audio/sfx.json')
+  .then(r => (r.ok ? r.json() : null))
+  .then(D => {
+    if (!D) return null;
+    for (const k in D) {
+      SFX_RAW[k] = fetch('assets/audio/sfx/' + k + '.mp3')
+        .then(r => (r.ok ? r.arrayBuffer() : null))
+        .catch(() => null);
+    }
+    return D;
+  })
+  .catch(() => null);
 function loadSamples() {
   if (sndTried || !AC) return;
   sndTried = true;
-  const D = window.__SNDB;
-  if (!D) return;
-  for (const k in D) {
-    const e = D[k];
-    let u8;
-    try {
-      const bin = atob(e.a);
-      u8 = new Uint8Array(bin.length);
-      for (let i = 0; i < bin.length; i++) u8[i] = bin.charCodeAt(i);
-    } catch (_) {
-      continue;
+  SFX_PROM.then(D => {
+    if (!D || !AC) return;
+    const loopTotal = Object.keys(D).filter(q => D[q].loop).length;
+    for (const k in D) {
+      const e = D[k];
+      SFX_RAW[k].then(ab => {
+        if (!ab || !AC) return;
+        const done = buf => {
+          const ch = buf.getChannelData(0),
+            sr = buf.sampleRate;
+          let mx = 0;
+          for (let i = 0; i < ch.length; i++) {
+            const q = Math.abs(ch[i]);
+            if (q > mx) mx = q;
+          }
+          const th = mx * (e.loop ? 0.003 : 0.02);
+          let i0 = 0;
+          while (i0 < ch.length - 1 && Math.abs(ch[i0]) < th) i0++;
+          const z = i0 / sr,
+            ref = e.loop ? 0 : e.r ? e.r[0] : 0.003;
+          const sh = e.loop ? Math.min(z, 0.08) : clamp(z - ref, 0, 0.08);
+          SB[k] = { buf, sh, d: e.d, r: e.r, t: e.t, s: e.s, loop: !!e.loop };
+          if (e.loop && ++SB_LOOPS === loopTotal) sndLoops();
+        };
+        try {
+          const pr = AC.decodeAudioData(ab.slice(0), done, () => {});
+          if (pr && pr.catch) pr.catch(() => {});
+        } catch (_) {}
+      });
     }
-    const done = buf => {
-      const ch = buf.getChannelData(0),
-        sr = buf.sampleRate;
-      let mx = 0;
-      for (let i = 0; i < ch.length; i++) {
-        const q = Math.abs(ch[i]);
-        if (q > mx) mx = q;
-      }
-      const th = mx * (e.loop ? 0.003 : 0.02);
-      let i0 = 0;
-      while (i0 < ch.length - 1 && Math.abs(ch[i0]) < th) i0++;
-      const z = i0 / sr,
-        ref = e.loop ? 0 : e.r ? e.r[0] : 0.003;
-      const sh = e.loop ? Math.min(z, 0.08) : clamp(z - ref, 0, 0.08);
-      SB[k] = { buf, sh, d: e.d, r: e.r, t: e.t, s: e.s, loop: !!e.loop };
-      if (e.loop && ++SB_LOOPS === Object.keys(D).filter(q => D[q].loop).length) sndLoops();
-    };
-    try {
-      const pr = AC.decodeAudioData(u8.buffer, done, () => {});
-      if (pr && pr.catch) pr.catch(() => {});
-    } catch (_) {}
-  }
+  });
 }
 // un tramo [a, b) de un clip (segundos desde su inicio real) en dest en el instante 'at', con fundidos para que nada haga clic
 function clipPart(k, dest, at, a, b, vol, rate, fi, fo) {

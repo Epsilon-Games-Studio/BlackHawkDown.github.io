@@ -5,6 +5,8 @@
  * privado del jugador allí, para que el progreso sobreviva a cerrar el juego, borrar el navegador o abrirlo en otro dispositivo
  * ================================================================================================== */
 
+'use strict';
+
 const SAVE = { v: 1, done: [], res: {}, last: null, intro: false, at: 0 };
 let cloud = null,
   cloudQ = Promise.resolve(),

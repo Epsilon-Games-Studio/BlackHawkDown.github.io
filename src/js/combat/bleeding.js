@@ -6,6 +6,8 @@
  * unidad (nunca el sanitario) va a por él y lo lleva a cuestas el resto de la misión, más despacio.
  * ================================================================================================== */
 
+'use strict';
+
 const BLEED_T = 60,
   BLEED_DK = 10;
 function bleedTick(dt) {

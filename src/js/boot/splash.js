@@ -5,6 +5,9 @@
  * de un hangar hacia la pantalla de título. Va aparte del juego para que salga mientras carga todo lo demás.
  * ================================================================================================== */
 
+
+(function () {
+  'use strict';
 // ---- ya no hay código de acceso: el logo del estudio sale nada más abrir la página y luego la pantalla de título
 var sp = document.getElementById('epsSplash');
 var EVS = [
@@ -200,3 +203,4 @@ function splash() {
 }
 if (document.readyState === 'loading') addEventListener('DOMContentLoaded', splash);
 else splash();
+})();

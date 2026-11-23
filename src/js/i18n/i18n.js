@@ -5,6 +5,8 @@
  * (EN_RX) para las frases con números o nombres. También traduce el HTML de la página y los empleos militares.
  * ================================================================================================== */
 
+'use strict';
+
 const DIRS_EN = {
   norte: 'north',
   noreste: 'northeast',

@@ -4,6 +4,8 @@
  * Táctil: un menú contextual bajo el dedo, para edificios y pulsaciones largas
  * ================================================================================================== */
 
+'use strict';
+
 function closeCtx() {
   const el = $('ctx');
   if (el) {

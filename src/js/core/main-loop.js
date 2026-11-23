@@ -5,6 +5,8 @@
  * lo que se ve con el estado del juego y pinta el frame (escena, postproceso y overlay).
  * ================================================================================================== */
 
+'use strict';
+
 let last = performance.now(),
   ambT = 0,
   frameN = 0;

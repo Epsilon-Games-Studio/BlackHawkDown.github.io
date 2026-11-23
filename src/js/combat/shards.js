@@ -5,6 +5,8 @@
  * a su manera), cae, rebota y se queda donde aterriza; cuando el pool se llena se van primero las más viejas
  * ================================================================================================== */
 
+'use strict';
+
 const SHN = 1500;
 let SHD = null;
 function jagGeo(base, amp, sx, sy, sz, seed) {

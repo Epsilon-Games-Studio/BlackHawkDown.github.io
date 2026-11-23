@@ -7,6 +7,8 @@
  * Un toque decide si selecciona un soldado, ataca a un enemigo o manda moverse.
  * ================================================================================================== */
 
+'use strict';
+
 const ray = new T.Raycaster(),
   ndc = new T.Vector2(),
   plane = new T.Plane(new T.Vector3(0, 1, 0), 0),

@@ -5,6 +5,8 @@
  * Tiene que ser lo último de todo: aquí ya existe cada función del juego.
  * ================================================================================================== */
 
+'use strict';
+
 soundOn = OPT.sound;
 PS = OPT.q;
 resize();

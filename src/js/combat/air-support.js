@@ -4,6 +4,8 @@
  * Ruido: disparos y explosiones que hacen correr a los civiles
  * ================================================================================================== */
 
+'use strict';
+
 function addNoise(x, z, r) {
   if (!G) return;
   G.noise.push({ x, z, r: r || 22, t: G.t });

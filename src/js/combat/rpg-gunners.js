@@ -4,6 +4,8 @@
  * Tiradores de RPG de la milicia: uno de cada veinte. 15 % de acierto y 30 s de recarga; el cohete deja humo y luz y la explosión suelta escombros grandes y pequeños
  * ================================================================================================== */
 
+'use strict';
+
 function rpgEligible(s) {
   if (!s || s.dummy || s.noRpg || window.__noRPG || s.tag === 'rpg' || /técnica/.test(s.name || '')) return false;
   let id = null;

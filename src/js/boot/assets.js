@@ -1,18 +1,16 @@
+'use strict';
 /* ====================================================================================================
  * boot/assets.js
  *
- * Acceso a los modelos 3D embebidos en los paquetes de static/ (window.__EMBED).
- * Si no están, los intenta bajar como archivos .txt/.png sueltos junto a la página.
+ * Acceso a los modelos 3D (.heli y .png) en assets/models/.
  * ================================================================================================== */
 
-const EMB = window.__EMBED || null;
-function assetTxt(n) {
-  if (EMB && EMB[n]) return Promise.resolve(EMB[n].t);
-  return fetch(n + '.txt').then(r => {
+function assetBin(n) {
+  return fetch('assets/models/' + n + '.heli').then(r => {
     if (!r.ok) throw new Error(n);
-    return r.text();
+    return r.arrayBuffer();
   });
 }
 function assetPng(n) {
-  return EMB && EMB[n] ? 'data:image/png;base64,' + EMB[n].p : n + '.png';
+  return 'assets/models/' + n + '.png';
 }

@@ -4,7 +4,7 @@ Las cosas que más se repiten, paso a paso.
 
 ## Añadir una misión
 
-1. Crea `src/js/missions/m10-loquesea.js` con su cabecera (copia la de otra misión y cámbiala).
+1. Crea `src/js/missions/m10-loquesea.js` con `'use strict';` y su cabecera (copia la de otra misión y cámbiala).
 2. Define la misión:
 
    ```js
@@ -41,53 +41,48 @@ Las cosas que más se repiten, paso a paso.
    };
    ```
 
-3. Añádela al manifiesto `src/js/manifest.txt`, justo después de `missions/m09-la-milla.js`.
-4. Métela en la campaña: en `missions/attract.js`, añade su id a `CAMPAIGN`.
-5. Traduce sus textos (título, briefing, objetivos, frases de radio) en `i18n/en-dictionary.js`.
-6. `python3 tools/serve.py --dev`, a probarla.
+3. Enlázala en `index.html` con `<script defer src="src/js/missions/m10-loquesea.js"></script>`, justo después de `m09-la-milla.js`.
+4. Métela en la campaña: en `src/js/missions/attract.js`, añade su id a `CAMPAIGN`.
+5. Traduce sus textos (título, briefing, objetivos, frases de radio) en `src/js/i18n/en-dictionary.js`.
+6. Abre un servidor local (`python3 -m http.server 8000`) y a probarla.
 
-Lo común para todas (subobjetivos, puntos de control, final) ya lo hace `missions/common/mission-flow.js`.
+Lo común para todas (subobjetivos, puntos de control, final) ya lo hace `src/js/missions/common/mission-flow.js`.
 
 ## Añadir una frase o un texto de pantalla
 
 Se escribe en español donde haga falta, `radio(u, '¡Contacto!')` por ejemplo, y en
-`i18n/en-dictionary.js` se añade la pareja `"¡Contacto!": "Contact!"`. Si la frase lleva números
-o nombres que cambian, hace falta un patrón en `EN_RX` (en `i18n/i18n.js`).
+`src/js/i18n/en-dictionary.js` se añade la pareja `"¡Contacto!": "Contact!"`. Si la frase lleva números
+o nombres que cambian, hace falta un patrón en `EN_RX` (en `src/js/i18n/i18n.js`).
 
 ## Añadir un archivo de código
 
-1. Créalo en la carpeta que le toque, con su cabecera.
-2. Ponlo en `src/js/manifest.txt` **después** de los archivos que use al cargar.
+1. Créalo en la carpeta de `src/js/` que le toque, con su cabecera y `'use strict';` al principio.
+2. Enlázalo en `index.html` con `<script defer src="src/js/...">` **después** de los archivos que use al cargar (y antes de `core/boot.js`).
 3. Si solo define funciones, el sitio da igual mientras esté antes de `core/boot.js`.
 
 ## Añadir un modelo 3D
 
-Los modelos van en formato HELI (geometría binaria en base64, la lee `parseHeli` en
-`units/helicopters.js`) más una textura PNG.
+Los modelos van en formato binario HELI (lo lee `parseHeli` en `src/js/units/helicopters.js`) más una textura PNG.
 
-1. Copia `nombre.heli` y `nombre.png` a `src/assets/models/<carpeta>/`.
-2. En el código: `if (EMB) EMB.nombre = __MODEL__('models/<carpeta>/nombre');` y después
-   `loadModel('nombre')`. Para usarlo: `withModel('nombre', M => { … })`.
-3. Los modelos grandes y que no cambian pueden ir en un paquete de `static/` para que el
-   `index.html` no engorde.
+1. Copia `nombre.heli` y `nombre.png` a `assets/models/`.
+2. En `src/js/core/models.js`, llama a `loadModel('nombre')`. Para usarlo en el mundo o en una misión: `withModel('nombre', M => { … })`.
+
+## Añadir o cambiar un sonido
+
+Los efectos viven en `assets/audio/sfx/<nombre>.mp3` y sus tiempos en `assets/audio/sfx.json`.
+Si añades o sustituyes un clip, actualiza su entrada en `sfx.json` (al menos la duración `d`, y `r`/`t`/`s`/`loop` si aplica).
 
 ## Cambiar estilos
 
-Cada zona tiene su archivo en `src/css/`. Si una regla no hace caso, mira el orden en
-`src/css/manifest.txt`: gana la que va después.
+Cada zona tiene su archivo en `src/css/`. Si una regla no hace caso, mira el orden de los `<link rel="stylesheet">` en `index.html`: gana la que va después. Si añades un archivo nuevo, añade su `<link>` ahí.
 
 ## Publicar
 
-```bash
-python3 tools/build.py
-```
-
-Sube `dist/index.html`. Los paquetes de `static/` solo hay que subirlos si han cambiado.
+GitHub Pages publica directamente la rama `main` tal cual: basta con subir los archivos cambiados (sin paso de compilación).
 
 ## Antes de publicar algo gordo
 
 ```bash
-python3 tools/build.py --debug
 python3 tools/smoke_test.py
 ```
 

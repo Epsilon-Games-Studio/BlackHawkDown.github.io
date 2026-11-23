@@ -8,6 +8,8 @@
  * se corta al empezar una misión y vuelve en la pantalla de final de misión.
  * ================================================================================================== */
 
+'use strict';
+
 const MUS = { on: false, out: null, rev: null, bus: null, bar: 0, next: 0, voices: [], want: false, offAt: -99 };
 const MUS_SCREENS = new Set([
   'scrMenu',

@@ -6,6 +6,8 @@
  * El estado de la partida (G) y newGame(), que lo deja limpio antes de cada misión.
  * ================================================================================================== */
 
+'use strict';
+
 function newGame() {
   irReset();
   CONVOYS = [];

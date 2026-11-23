@@ -5,6 +5,8 @@
  * en una esquina se la lleva. Los trozos vuelven a la malla instanciada del propio chunk, así el muro roto conserva su aspecto
  * ================================================================================================== */
 
+'use strict';
+
 function boxAxis(e) {
   const r = ((e.ry % Math.PI) + Math.PI) % Math.PI;
   return !e.rx && !e.rz && (r < 0.02 || Math.abs(r - Math.PI / 2) < 0.02 || Math.abs(r - Math.PI) < 0.02);

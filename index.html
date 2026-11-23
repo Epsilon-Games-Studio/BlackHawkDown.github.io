@@ -1,0 +1,394 @@
+<!doctype html>
+<!--
+  Mogadiscio '93 · Black Hawk Down
+  Épsilon Games Studio — Jesús Navas Aller
+
+  Página principal del juego (servida directamente por GitHub Pages, sin paso de compilación).
+  El orden de los CSS (cascada) y de los <script defer> importa: el código que se ejecuta
+  al cargar cada archivo depende de los anteriores.
+-->
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#000000">
+  <title>Black Hawk Down</title>
+  <link rel="icon" type="image/webp" href="assets/img/epsilon-simbolo.webp">
+
+  <!-- Tipografías: Saira Stencil para los títulos, Barlow Condensed para el HUD, Plex Mono para los datos,
+       Caveat y Special Elite para el manual de campo escrito a mano -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Saira+Stencil+One&family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@500&family=Caveat:wght@500;700&family=Special+Elite&display=swap">
+
+  <!-- Estilos por zonas (gana el que va después) -->
+  <link rel="stylesheet" href="src/css/splash.css">
+  <link rel="stylesheet" href="src/css/base.css">
+  <link rel="stylesheet" href="src/css/hud/top-bar.css">
+  <link rel="stylesheet" href="src/css/hud/camera-rail.css">
+  <link rel="stylesheet" href="src/css/hud/orders.css">
+  <link rel="stylesheet" href="src/css/hud/curtain.css">
+  <link rel="stylesheet" href="src/css/hud/squad-cards.css">
+  <link rel="stylesheet" href="src/css/screens/briefing.css">
+  <link rel="stylesheet" href="src/css/hud/radio-chat.css">
+  <link rel="stylesheet" href="src/css/hud/flight.css">
+  <link rel="stylesheet" href="src/css/hud/tactical-map.css">
+  <link rel="stylesheet" href="src/css/screens/campaign.css">
+  <link rel="stylesheet" href="src/css/screens/field-manual.css">
+  <link rel="stylesheet" href="src/css/screens/loading.css">
+  <link rel="stylesheet" href="src/css/hud/wounded-blink.css">
+  <link rel="stylesheet" href="src/css/screens/title.css">
+</head>
+<body>
+
+<!-- Logo del estudio: va lo primero para verse mientras carga el resto -->
+<!-- Logo de Épsilon Games Studio. Lo anima src/js/boot/splash.js y lo viste src/css/splash.css. -->
+<div id="epsSplash" aria-label="Épsilon Games Studio">
+<div class="es-glow"></div>
+
+<div class="es-logo">
+
+<img class="es-sym" alt="" src="assets/img/epsilon-simbolo.webp">
+
+<img class="es-word" alt="Épsilon" src="assets/img/epsilon-nombre.webp">
+<span class="es-line"></span>
+<img class="es-sub" alt="Games Studio" src="assets/img/epsilon-games-studio.webp">
+</div>
+<div class="es-seam"></div>
+<div class="es-skip">Toca para saltar</div>
+</div>
+<script src="src/js/boot/splash.js"></script>
+
+<!-- La vista 3D y el HUD de la partida -->
+<!-- El lienzo 3D (#view) y el HUD de la partida: panel de misión arriba, cámara a la derecha,
+     órdenes y fichas abajo. Los textos van en español; i18n/i18n.js los traduce al vuelo. -->
+<canvas id="view"></canvas>
+<div id="hud">
+  <header id="top">
+    <div class="mission" role="button" tabindex="0" aria-expanded="false" title="Ver subobjetivos">
+      <span class="eyebrow">Misión</span>
+      <i class="chev mchev" aria-hidden="true"></i>
+      <div class="mrow"><span id="clock">15:42:00</span><span id="obj"></span></div>
+      <ol id="subs"></ol>
+      <span id="tally">Escuadra 6/6 · Abatidos 0</span>
+    </div>
+  </header>
+  <div id="log" hidden></div>
+  <div id="camctl">
+    <button id="bMenu" class="tiny" title="Menú (Esc)" aria-label="Menú"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 7h14M5 12h14M5 17h14"/></svg></button>
+    <button id="bPause" class="tiny" title="Pausa táctica (Espacio)" aria-label="Pausa"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5v14M15 5v14"/></svg></button>
+    <button id="bMap" hidden class="tiny" title="Mapa de la ciudad y la región (N)" aria-label="Mapa"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z"/><path d="M9 4v14M15 6v14"/></svg></button>
+    <button id="bAuto" class="tiny txt" aria-pressed="true" title="Pausa automática con contacto, bajas, refuerzos y objetivos nuevos">Auto</button>
+    <button id="bSpeed" class="tiny txt" title="Velocidad">1×</button>
+    <button id="bSound" class="tiny" title="Sonido" aria-label="Sonido"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16 9a4 4 0 010 6M18.5 6.5a7.5 7.5 0 010 11"/></svg></button>
+    <span class="csep" aria-hidden="true"></span>
+    <button id="cRotL" title="Girar (Q)">&#10226;</button>
+    <button id="cRotR" title="Girar (E)">&#10227;</button>
+    <button id="cZin" title="Acercar">+</button>
+    <button id="cZout" title="Alejar">&minus;</button>
+    <button id="cMap" title="Mapa táctico (N)" aria-label="Mapa táctico"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z"/><path d="M9 4v14M15 6v14"/></svg></button>
+  </div>
+  <footer id="bottom">
+    <span id="hint"></span>
+    <div id="orders">
+      <button id="oChain" aria-pressed="true" title="Ruta: toca el suelo punto a punto (M)" aria-label="Ruta: toca el suelo punto a punto (M)"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="18" r="2"/><circle cx="12" cy="8" r="2"/><circle cx="19" cy="16" r="2"/><path d="M6.4 16.4l4.3-6.6M13.5 9.5l4.2 5"/></svg></button>
+      <div id="formWrap"><button id="oForm" title="Formación" aria-label="Formación" aria-expanded="false"><svg id="oFormIco" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="6.5" r="1.9" fill="currentColor" stroke="none"/><circle cx="16" cy="10.5" r="1.9" fill="currentColor" stroke="none"/><circle cx="8" cy="15" r="1.9" fill="currentColor" stroke="none"/><circle cx="16" cy="19.5" r="1.9" fill="currentColor" stroke="none"/><path d="M8 1.9l1.6 2.4h-3.2z" fill="currentColor" stroke="none"/></svg></button><div id="formMenu" hidden><button class="fopt" data-f="col" aria-pressed="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="6.5" r="1.9" fill="currentColor" stroke="none"/><circle cx="12" cy="11.5" r="1.9" fill="currentColor" stroke="none"/><circle cx="12" cy="16.5" r="1.9" fill="currentColor" stroke="none"/><circle cx="12" cy="21.5" r="1.9" fill="currentColor" stroke="none"/><path d="M12 1.9l1.6 2.4h-3.2z" fill="currentColor" stroke="none"/></svg><span>Columna</span></button><button class="fopt" data-f="wedge" aria-pressed="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7" r="1.9" fill="currentColor" stroke="none"/><circle cx="8" cy="12" r="1.9" fill="currentColor" stroke="none"/><circle cx="16" cy="12" r="1.9" fill="currentColor" stroke="none"/><circle cx="4" cy="17" r="1.9" fill="currentColor" stroke="none"/><circle cx="20" cy="17" r="1.9" fill="currentColor" stroke="none"/><path d="M12 2.4l1.6 2.4h-3.2z" fill="currentColor" stroke="none"/></svg><span>Punta de flecha</span></button><button class="fopt" data-f="stag" aria-pressed="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="6.5" r="1.9" fill="currentColor" stroke="none"/><circle cx="16" cy="10.5" r="1.9" fill="currentColor" stroke="none"/><circle cx="8" cy="15" r="1.9" fill="currentColor" stroke="none"/><circle cx="16" cy="19.5" r="1.9" fill="currentColor" stroke="none"/><path d="M8 1.9l1.6 2.4h-3.2z" fill="currentColor" stroke="none"/></svg><span>Columna escalonada</span></button><button class="fopt" data-f="ech" aria-pressed="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="19" cy="6.5" r="1.9" fill="currentColor" stroke="none"/><circle cx="14.5" cy="11" r="1.9" fill="currentColor" stroke="none"/><circle cx="10" cy="15.5" r="1.9" fill="currentColor" stroke="none"/><circle cx="5.5" cy="20" r="1.9" fill="currentColor" stroke="none"/><path d="M19 1.9l1.6 2.4h-3.2z" fill="currentColor" stroke="none"/></svg><span>Escalón izquierda</span></button></div></div>
+      <button id="oAtk" aria-pressed="false" title="Atacar (A)" aria-label="Atacar (A)"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="7"/><path d="M12 2v5M12 17v5M2 12h5M17 12h5"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg></button>
+      <button id="oSup" aria-pressed="false" title="Fuego de supresión (S)" aria-label="Fuego de supresión (S)"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4M3 7l4 2M3 17l4-2"/><path d="M10 12h11M10 7.5l11-2.5M10 16.5l11 2.5" stroke-dasharray="2 2.4"/></svg></button>
+      <button id="oCov" title="Buscar cobertura (C)" aria-label="Buscar cobertura (C)"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z"/><path d="M8 12h8"/></svg></button>
+      <button id="oStop" title="Alto (X)" aria-label="Alto (X)"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3h8l5 5v8l-5 5H8l-5-5V8z"/><path d="M8.5 12h7"/></svg></button>
+      <div id="supWrap"><button id="oSupport" class="sup" title="Apoyo: Little Bird, bengalas, visores" aria-label="Apoyo: Little Bird, bengalas, visores"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v4"/><circle cx="12" cy="12" r="5"/><path d="M12 9v6M9 12h6"/><path d="M5 19h14"/><path d="M8 19l1.5-3M16 19l-1.5-3"/></svg></button><div id="supMenu" hidden><button id="oLB" class="sup" aria-pressed="false" title="Pasada de Little Bird (L)" aria-label="Pasada de Little Bird (L)"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h18"/><path d="M12 7v3"/><path d="M6 13c0-1.7 2.3-3 5-3h2c2.2 0 4 1.3 4 3s-1.8 3-4 3H9"/><path d="M17 13h4l1-2"/><path d="M8 19h8M9 16v3M15 16v3"/></svg><span>Little Bird</span><em>×3</em></button><button id="oFlr" class="sup" aria-pressed="false" title="Bengala de iluminación, solo de noche (F)" aria-label="Bengala de iluminación, solo de noche (F)"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v6M12 16v6M2 12h6M16 12h6M5 5l4 4M15 15l4 4M19 5l-4 4M9 15l-4 4"/><circle cx="12" cy="12" r="2"/></svg><span>Bengala</span><em>×4</em></button><button id="oNV" aria-pressed="false" title="Visores nocturnos de Delta (V)" aria-label="Visores nocturnos de Delta (V)"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="9" width="7" height="7" rx="2"/><rect x="14" y="9" width="7" height="7" rx="2"/><path d="M10 12h4M7 9V6h10v3"/></svg><span>Visor NV</span></button></div></div>
+      <button id="oMed" aria-pressed="false" title="Atender a los heridos (H)" aria-label="Atender a los heridos (H)"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="2.5"/><path d="M12 7.5v9M7.5 12h9"/></svg></button>
+    </div>
+    <div id="cpToast">Punto de control</div><div id="squad"></div>
+  </footer>
+</div>
+<div id="ctx" hidden></div>
+
+<!-- Pantallas: título, menú, campaña, briefing, opciones, créditos, pausa, carga, manual -->
+<!-- Todas las pantallas fuera de la partida, dentro de #overlay. Solo se ve una cada vez (showScreen()). -->
+<div id="overlay" class="ov-title">
+  <section id="scrTitle" class="title-scr" aria-label="Pantalla de título" tabindex="0">
+    <span class="tt-date">Mogadiscio · 3 y 4 de octubre de 1993</span>
+    <h1 class="tt-h">Black Hawk<br><span>Down</span></h1>
+    <span class="tt-rule" aria-hidden="true"></span>
+    <p class="tt-credit">Creado y desarrollado por <b>Jesús Navas Aller</b></p>
+    <p class="tt-press">Pulsa cualquier tecla para continuar</p>
+    <span class="tt-ver">v. 0.60</span>
+  </section>
+
+  <nav id="scrMenu" class="menu-scr" aria-label="Menú principal" hidden>
+    <div><h1 class="mm-h">Black Hawk<br><span>Down</span></h1><span class="mm-sub">Mogadiscio · 3 y 4 de octubre de 1993</span></div>
+    <div class="mm-list">
+      <button id="mCont" hidden><span>Continuar</span><em></em></button>
+      <button id="mCamp"><span>Campaña</span><em>10 misiones, de Irene a La Milla</em></button>
+      <button id="mTut"><span>Tutorial</span><em>Las órdenes básicas en la avenida</em></button>
+      <button id="mMan"><span>Manual de campo</span><em>Apuntes para volver con vida</em></button>
+      <button id="mOpts"><span>Opciones</span><em>Sonido, controles y calidad</em></button>
+      <button id="mCred"><span>Créditos</span></button>
+    </div>
+    <div class="langrow" role="group" aria-label="Idioma"><span>Idioma</span><button class="langbtn" data-lang="es" aria-pressed="true">Español</button><button class="langbtn" data-lang="en" aria-pressed="false">English</button></div>
+    <span class="mm-foot">Prototipo 0.59 · Jesús Navas Aller</span>
+  </nav>
+
+  <section id="scrCamp" class="brief wide" aria-label="Campaña" hidden>
+    <span class="date">3 Y 4 OCT 1993 · MOGADISCIO</span>
+    <h1 class="sm">Campaña</h1>
+    <div class="tl" id="campTl"></div>
+    <ol class="camp" id="campList"></ol>
+    <div class="gorow"><button id="campBack">Menú principal</button><button id="campIntro">Ver la introducción</button></div>
+  </section>
+
+  <div class="brief" id="brief" hidden>
+    <span class="date" id="bDate">3 OCT 1993 · MOGADISCIO</span>
+    <span class="eyebrow" id="bEyebrow">Misión</span>
+    <h1 id="bTitle">Black Hawk Down</h1>
+    <div class="mcard"><span class="eyebrow">Objetivo</span><b id="bName" hidden></b><span id="bCard"></span></div>
+    <p id="bText"></p>
+    <dl class="meta"><dt>Lugar</dt><dd id="bPlace"></dd><dt>Fuerza</dt><dd id="bSquad"></dd><dt>Secundarios</dt><dd id="bOpt"></dd></dl>
+    <details class="ctrls"><summary>Controles</summary>
+    <ul>
+      <li><b>Pausa táctica:</b> Espacio o el botón Pausa. Con el juego parado puedes dar todas las órdenes que quieras. "Auto" para el juego solo con cada contacto, cada caído, los refuerzos y cada objetivo nuevo. Esc abre el menú.</li>
+      <li><b>Mover:</b> selecciona soldados y toca el suelo con un toque breve. Arrastrar siempre mueve la cámara y nunca da órdenes. Cada toque añade un punto a la ruta; al seleccionar de nuevo (o con el botón Ruta) empieza una ruta nueva. Con Formación eliges cómo marcha la unidad.</li>
+      <li><b>Dibujar una ruta:</b> mantén pulsado un soldado ya seleccionado y arrastra (se puede desactivar en Opciones).</li>
+      <li><b>Grupos:</b> toca la tarjeta de una unidad Romeo o Kilo para seleccionarlo entero; doble toque en un soldado selecciona su grupo; las teclas 1 a 9 también. Si alguien está herido, su tarjeta parpadea: ámbar herido, rojo grave o caído.</li>
+      <li><b>Atacar y suprimir:</b> toca un enemigo visible para atacarlo. Suprimir barre una zona: casi no mata, pero clava al enemigo al suelo.</li>
+      <li><b>Cubrirse:</b> cada soldado busca la mejor cobertura cercana frente a la amenaza.</li>
+      <li><b>Edificios:</b> con soldados seleccionados toca un edificio y elige planta baja o azotea.</li>
+      <li><b>Caídos:</b> el sanitario corre solo a levantar a los caídos; cualquier compañero a su lado también puede, más despacio.</li>
+      <li><b>Apoyo aéreo:</b> Little Bird: arrastra la franja de la pasada (máx. 50 m). Todo lo que quede dentro cae, también los tuyos. Bengala (solo de noche) ilumina unos 100 m; Delta lleva visores (V).</li>
+      <li><b>Columna:</b> el símbolo azul de la OTAN marca dónde está la columna de vehículos. No se puede seleccionar.</li>
+      <li><b>Cámara:</b> arrastra para desplazar, pellizca para zoom, gira con dos dedos o con los botones. "Techos" recorta los edificios. N abre el mapa.</li>
+    </ul></details>
+    <div class="keep"><div class="gorow"><button class="go" id="bStart">Comenzar misión</button><button id="bPeek" aria-pressed="false">Ver escenario</button><button id="bMap2">Mapa</button><button id="bBack">Campaña</button><button id="bFinale" class="devbtn" hidden title="Solo en la versión de desarrollo">Ver cinemática final · desarrollo</button></div></div>
+  </div>
+
+  <div class="brief" id="endScr" aria-live="polite" hidden></div>
+
+  <section id="scrOpts" class="brief" aria-label="Opciones" hidden>
+    <h1 class="sm">Opciones</h1>
+    <div class="opts">
+      <button id="opSound" class="optrow" aria-pressed="true"><span>Sonido</span><em>Sí</em></button>
+      <button id="opAuto" class="optrow" aria-pressed="true"><span>Pausa automática con contactos, caídos y objetivos nuevos</span><em>Sí</em></button>
+      <button id="opDraw" class="optrow" aria-pressed="true"><span>Dibujar la ruta manteniendo pulsado un soldado seleccionado</span><em>Sí</em></button>
+      <button id="opMusic" class="optrow" aria-pressed="true"><span>Música</span><em>Sí</em></button>
+      <button id="opRays" class="optrow" aria-pressed="true"><span>Rayos de luz</span><em>Sí</em></button>
+      <div class="optrow"><span>Idioma</span><div class="seg" role="group" aria-label="Idioma"><button class="langbtn" data-lang="es">Español</button><button class="langbtn" data-lang="en">English</button></div></div>
+      <div class="optrow"><span>Calidad de imagen</span><div id="opQ" class="seg" role="group" aria-label="Calidad"><button data-q="0.75">Ultra</button><button data-q="1">Alta</button><button data-q="1.5">Media</button><button data-q="2.5">Baja</button></div></div>
+      <div class="optrow"><span>Gráficos</span><div id="opG" class="seg" role="group" aria-label="Gráficos"><button data-g="high">Alto</button><button data-g="mid">Medio</button><button data-g="low">Bajo</button></div></div>
+      <button id="opDyn" class="optrow" aria-pressed="true"><span>Resolución dinámica</span><em>Sí</em></button>
+      <button id="opFps" class="optrow" aria-pressed="false"><span>Contador de FPS</span><em>No</em></button>
+    </div>
+    <p class="hintp">Arrastrar por la pantalla siempre mueve la cámara. Solo un toque breve en el suelo da la orden de mover.</p>
+    <div class="gorow"><button class="go" id="opBack">Volver</button></div>
+  </section>
+
+  <section id="scrCred" class="brief" aria-label="Créditos" hidden>
+    <h1 class="sm">Créditos</h1>
+    <dl class="cred">
+      <dt>Creado y desarrollado por</dt><dd><b>Jesús Navas Aller</b></dd>
+      <dt>Basado en</dt><dd>La batalla de Mogadiscio del 3 y 4 de octubre de 1993. Inspirado en el libro de Mark Bowden y en la película de Ridley Scott.</dd>
+      <dt>Nombres</dt><dd>Mandos, pilotos, francotiradores y operadores de Delta llevan los nombres reales de la batalla. El resto de soldados son ficticios.</dd>
+      <dt>Motor 3D</dt><dd>Three.js r128, licencia MIT</dd>
+      <dt>Tipografías</dt><dd>Saira Stencil One, Barlow Condensed e IBM Plex Mono</dd>
+    </dl>
+    <p class="hintp">En recuerdo de los dieciocho soldados estadounidenses, el soldado malasio y los cientos de somalíes que murieron en aquellos dos días.</p>
+    <div class="gorow"><button class="go" id="credBack">Volver</button></div>
+  </section>
+
+  <section id="scrPause" class="brief narrow" aria-label="Pausa" hidden>
+    <h1 class="sm">Pausa</h1>
+    <div class="mm-list">
+      <button id="pResume"><span>Reanudar</span></button>
+      <button id="pRestart"><span>Reiniciar misión</span></button>
+      <button id="pOpts"><span>Opciones</span></button>
+      <button id="pQuit"><span>Menú principal</span></button>
+    </div>
+  </section>
+
+  <section id="scrLoad" class="ldscr" aria-live="polite" hidden>
+    <div class="ld-in">
+      <span class="ld-eye" id="ldEye">Cargando misión</span>
+      <h2 class="ld-title" id="ldTitle">Mogadiscio</h2>
+      <span class="ld-sub" id="ldSub"></span>
+      <div class="ld-bar" role="progressbar" aria-label="Carga" aria-valuemin="0" aria-valuemax="100"><i id="ldFill"></i><b></b><b></b><b></b><b></b></div>
+      <span class="ld-step" id="ldStep"></span>
+      <p class="ld-tip"><em>Manual de campo</em><span id="ldTip"></span></p>
+    </div>
+  </section>
+  <section id="scrMan" class="man-scr" aria-label="Manual de campo" hidden>
+    <div class="man-book" id="manBook"></div>
+    <nav class="man-nav">
+      <button id="manPrev" aria-label="Página anterior">‹</button><span id="manPg"></span><button id="manNext" aria-label="Página siguiente">›</button>
+      <button id="manClose" class="man-close">Cerrar</button>
+    </nav>
+  </section>
+  <section id="scrIntro" class="intro-scr" aria-live="polite" hidden><p id="introLine" class="intro-line"></p><button id="introSkip">Saltar</button></section>
+</div>
+
+<!-- Vuelo de Irene, cinemáticas y mapa táctico -->
+<!-- Lo que se superpone en el vuelo de Irene y en las cinemáticas, el chat de radio y el panel del mapa táctico. -->
+<button id="bSkip" hidden>Saltar vuelo</button>
+<div id="chat" class="empty" aria-live="polite"><button id="chatHead" aria-expanded="false" title="Ver toda la radio"><span>Radio</span><i class="chev" aria-hidden="true"></i></button><div id="chatLive"></div><div id="chatHist" hidden></div></div>
+<div id="flyUnits" aria-label="Unidades en vuelo"></div>
+<div id="flyCam"><button id="fZin" title="Acercar" aria-label="Acercar">+</button><button id="fZout" title="Alejar" aria-label="Alejar">&minus;</button><button id="fRotL" title="Girar cámara (Q)" aria-label="Girar cámara a la izquierda">&#10226;</button><button id="fRotR" title="Girar cámara (E)" aria-label="Girar cámara a la derecha">&#10227;</button></div>
+<div id="cine" hidden></div>
+<div id="mapPanel" hidden>
+  <div class="mp-head"><b>Mapa táctico</b>
+    <div class="mp-tabs" role="group" aria-label="Escala"><button id="mpCity" aria-pressed="true">Ciudad</button><button id="mpReg" aria-pressed="false">Región</button></div>
+    <button id="mpPause" aria-pressed="false">Pausa</button><button id="mpClose">Cerrar</button></div>
+  <div class="mp-view"><canvas id="mpCanvas"></canvas>
+    <div class="mp-ctl"><button id="mpZin" aria-label="Acercar">+</button><button id="mpZout" aria-label="Alejar">&minus;</button><button id="mpCentre" title="Centrar en mis unidades" aria-label="Centrar en mis unidades">&#8982;</button><button id="mpAll" title="Ver el plano entero" aria-label="Ver el plano entero">&#9635;</button></div>
+    <div id="mpLoading" class="mp-loading" hidden>Desplegando el plano…</div></div>
+  <span class="mp-hint">Arrastra para moverte · pellizca o usa la rueda para ampliar · toca un punto para llevar la cámara allí</span>
+</div>
+
+<!-- three.js (MIT) -->
+<script defer src="src/vendor/three.min.js"></script>
+
+<!-- Carga de modelos 3D (.heli + .png en assets/models/) y tablas de geometría -->
+<script defer src="src/js/boot/assets.js"></script>
+<script defer src="src/data/matas-hierba.js"></script>
+<script defer src="src/data/soldados.js"></script>
+<script defer src="src/data/armas-1.js"></script>
+<script defer src="src/data/armas-2.js"></script>
+<script defer src="src/data/armas-3.js"></script>
+
+<!-- El juego: scripts clásicos diferidos en orden de dependencia -->
+<script defer src="src/js/core/config.js"></script>
+<script defer src="src/js/core/random.js"></script>
+<script defer src="src/js/render/renderer.js"></script>
+<script defer src="src/js/ui/field-manual-content.js"></script>
+<script defer src="src/js/render/surface-detail.js"></script>
+<script defer src="src/js/world/instanced-parts.js"></script>
+<script defer src="src/js/world/map-grid.js"></script>
+<script defer src="src/js/world/facades.js"></script>
+<script defer src="src/js/world/buildings.js"></script>
+<script defer src="src/js/world/props.js"></script>
+<script defer src="src/js/world/cover.js"></script>
+<script defer src="src/js/world/markets.js"></script>
+<script defer src="src/js/world/ground.js"></script>
+<script defer src="src/js/world/chunks.js"></script>
+<script defer src="src/js/world/ground-chunk-texture.js"></script>
+<script defer src="src/js/world/city-shape.js"></script>
+<script defer src="src/js/world/trees.js"></script>
+<script defer src="src/js/world/foliage.js"></script>
+<script defer src="src/js/world/main-road.js"></script>
+<script defer src="src/js/world/city-plan.js"></script>
+<script defer src="src/js/world/landmarks.js"></script>
+<script defer src="src/js/world/arch-trionfo.js"></script>
+<script defer src="src/js/world/small-houses.js"></script>
+<script defer src="src/js/world/street-lights.js"></script>
+<script defer src="src/js/world/airport.js"></script>
+<script defer src="src/js/world/tfr-base.js"></script>
+<script defer src="src/js/world/ocean.js"></script>
+<script defer src="src/js/ui/map-sheets.js"></script>
+<script defer src="src/js/fx/particles.js"></script>
+<script defer src="src/js/render/dynamic-lights.js"></script>
+<script defer src="src/js/render/sun.js"></script>
+<script defer src="src/js/units/soldier-rig.js"></script>
+<script defer src="src/js/world/base-life.js"></script>
+<script defer src="src/js/render/mesh-simplify.js"></script>
+<script defer src="src/js/render/atmosphere.js"></script>
+<script defer src="src/js/render/shadow-map.js"></script>
+<script defer src="src/js/render/model-lod.js"></script>
+<script defer src="src/js/units/soldier-batches.js"></script>
+<script defer src="src/js/units/swinging-kit.js"></script>
+<script defer src="src/js/world/washing-lines.js"></script>
+<script defer src="src/js/world/litter.js"></script>
+<script defer src="src/js/world/ambience.js"></script>
+<script defer src="src/js/world/palms.js"></script>
+<script defer src="src/js/world/birds.js"></script>
+<script defer src="src/js/units/helicopters.js"></script>
+<script defer src="src/js/world/ambience-update.js"></script>
+<script defer src="src/js/world/target-house.js"></script>
+<script defer src="src/js/world/world-build.js"></script>
+<script defer src="src/js/sim/pathfinding.js"></script>
+<script defer src="src/js/sim/line-of-sight.js"></script>
+<script defer src="src/js/core/game-state.js"></script>
+<script defer src="src/js/sim/commands.js"></script>
+<script defer src="src/js/sim/formations.js"></script>
+<script defer src="src/js/sim/idle-life.js"></script>
+<script defer src="src/js/sim/militia-idle.js"></script>
+<script defer src="src/js/combat/combat.js"></script>
+<script defer src="src/js/combat/impacts.js"></script>
+<script defer src="src/js/combat/shards.js"></script>
+<script defer src="src/js/combat/battle-damage.js"></script>
+<script defer src="src/js/audio/gunfire.js"></script>
+<script defer src="src/js/fx/fx.js"></script>
+<script defer src="src/js/audio/sound.js"></script>
+<script defer src="src/js/audio/menu-music.js"></script>
+<script defer src="src/js/core/models.js"></script>
+<script defer src="src/js/sim/occupy-buildings.js"></script>
+<script defer src="src/js/sim/night-light.js"></script>
+<script defer src="src/js/combat/air-support.js"></script>
+<script defer src="src/js/world/civilians.js"></script>
+<script defer src="src/js/world/city-life.js"></script>
+<script defer src="src/js/input/touch-menu.js"></script>
+<script defer src="src/js/world/olympic-sign.js"></script>
+<script defer src="src/js/world/palm-crowns.js"></script>
+<script defer src="src/js/sim/simulation.js"></script>
+<script defer src="src/js/sim/fatigue.js"></script>
+<script defer src="src/js/missions/common/helpers.js"></script>
+<script defer src="src/js/missions/common/spawn.js"></script>
+<script defer src="src/js/sim/force-groups.js"></script>
+<script defer src="src/js/units/technicals.js"></script>
+<script defer src="src/js/units/vehicle-columns.js"></script>
+<script defer src="src/js/units/scripted-aircraft.js"></script>
+<script defer src="src/js/units/c2-cabin.js"></script>
+<script defer src="src/js/ui/convoy-symbol.js"></script>
+<script defer src="src/js/missions/common/wounded-waiting.js"></script>
+<script defer src="src/js/missions/common/mount-vehicles.js"></script>
+<script defer src="src/js/missions/registry.js"></script>
+<script defer src="src/js/combat/bleeding.js"></script>
+<script defer src="src/js/combat/knockdown.js"></script>
+<script defer src="src/js/combat/far-gunner.js"></script>
+<script defer src="src/js/combat/breakable-walls.js"></script>
+<script defer src="src/js/missions/common/cinematics.js"></script>
+<script defer src="src/js/combat/rpg-gunners.js"></script>
+<script defer src="src/js/missions/m02-hawlwadig.js"></script>
+<script defer src="src/js/missions/m03-super61.js"></script>
+<script defer src="src/js/missions/m04-wolcott.js"></script>
+<script defer src="src/js/missions/m05-convoy-perdido.js"></script>
+<script defer src="src/js/missions/m06-super64.js"></script>
+<script defer src="src/js/missions/m07-anochecer.js"></script>
+<script defer src="src/js/missions/m08-mortero.js"></script>
+<script defer src="src/js/missions/m08-segunda-fase.js"></script>
+<script defer src="src/js/missions/m09-la-milla.js"></script>
+<script defer src="src/js/missions/tutorial/training-ground.js"></script>
+<script defer src="src/js/missions/tutorial/guide.js"></script>
+<script defer src="src/js/missions/tutorial/afternoon.js"></script>
+<script defer src="src/js/missions/tutorial/wounded.js"></script>
+<script defer src="src/js/missions/tutorial/beach.js"></script>
+<script defer src="src/js/missions/tutorial/intro.js"></script>
+<script defer src="src/js/missions/attract.js"></script>
+<script defer src="src/js/missions/m01-irene/setup.js"></script>
+<script defer src="src/js/missions/common/mission-flow.js"></script>
+<script defer src="src/js/render/camera.js"></script>
+<script defer src="src/js/render/film-grade.js"></script>
+<script defer src="src/js/render/camera-controls.js"></script>
+<script defer src="src/js/input/input.js"></script>
+<script defer src="src/js/ui/hud.js"></script>
+<script defer src="src/js/ui/radio-chat.js"></script>
+<script defer src="src/js/ui/buttons-and-keys.js"></script>
+<script defer src="src/js/missions/common/finales.js"></script>
+<script defer src="src/js/i18n/en-dictionary.js"></script>
+<script defer src="src/js/i18n/i18n.js"></script>
+<script defer src="src/js/ui/screens.js"></script>
+<script defer src="src/js/core/save.js"></script>
+<script defer src="src/js/ui/campaign-screen.js"></script>
+<script defer src="src/js/render/light-pool.js"></script>
+<script defer src="src/js/ui/options-and-menus.js"></script>
+<script defer src="src/js/ui/field-manual-pages.js"></script>
+<script defer src="src/js/render/render-sync.js"></script>
+<script defer src="src/js/ui/planned-routes.js"></script>
+<script defer src="src/js/missions/m01-irene/flight.js"></script>
+<script defer src="src/js/missions/m01-irene/boarding.js"></script>
+<script defer src="src/js/missions/m01-irene/dust-and-ropes.js"></script>
+<script defer src="src/js/missions/m01-irene/flight-control.js"></script>
+<script defer src="src/js/ui/map-print.js"></script>
+<script defer src="src/js/ui/tactical-map.js"></script>
+<script defer src="src/js/core/main-loop.js"></script>
+<script defer src="src/js/core/boot.js"></script>
+
+</body>
+</html>

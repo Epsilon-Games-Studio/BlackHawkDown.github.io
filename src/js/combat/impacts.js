@@ -4,6 +4,8 @@
  * Impactos de bala: rayos contra el mundo, escombros y agujeros
  * ================================================================================================== */
 
+'use strict';
+
 let HG = null,
   hgStamp = 0,
   trickles = [];

@@ -7,6 +7,8 @@
  * donde caen. Botas y ruedas marcan la arena, y las marcas se borran cuando las rellena el viento.
  * ================================================================================================== */
 
+'use strict';
+
 const MARKL = [];
 let CRACKS = null,
   PATCHES = null,

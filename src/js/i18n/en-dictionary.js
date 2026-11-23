@@ -4,6 +4,8 @@
  * Idiomas: el español es el original; el inglés va con este diccionario y unos cuantos patrones
  * ================================================================================================== */
 
+'use strict';
+
 const EN = {
   'Mapa táctico': 'Tactical map',
   'Mapa táctico (N)': 'Tactical map (N)',

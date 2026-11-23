@@ -5,24 +5,28 @@ Esto es el mapa general. Para el detalle, cada archivo de `src/js/` tiene su cab
 ## 1. De la página al primer frame
 
 ```
-dist/index.html
- ├─ <style>     todo el CSS (src/css, en el orden de su manifest)
- ├─ splash      el logo de Épsilon (js/boot/splash.js): sale mientras carga lo demás
- ├─ HTML        HUD y pantallas (src/html)
- ├─ three.js    (src/vendor)
- ├─ static/*.js música, sonidos, vídeos y modelos en base64 → window.__EMBED
- ├─ assets.js   assetTxt() / assetPng(): sacan un modelo de __EMBED
- └─ el juego    los archivos de js/manifest.txt, en orden, dentro de una función
-                (function(){ "use strict"; …todo… })();
+index.html (en la raíz, servido tal cual por GitHub Pages)
+ ├─ <link>      16 hojas CSS de src/css/ en orden de cascada
+ ├─ splash      el logo de Épsilon (src/js/boot/splash.js): sale mientras carga lo demás
+ ├─ HTML        HUD, pantallas, cinemáticas y mapa táctico
+ ├─ three.js    (src/vendor/three.min.js)
+ ├─ assets.js   assetBin() / assetPng(): cargan modelos .heli + .png desde assets/models/
+ ├─ data/*.js   tablas de geometría síncrona (src/data/)
+ └─ el juego    los <script defer> de src/js/, en orden de dependencia
 ```
 
-Como todo el juego va dentro de **una sola función**, cualquier archivo ve las variables y funciones
-de los demás sin `import` ni `export`. Es cómodo, pero tiene una regla: lo que se ejecuta **al cargar**
-(un `const X = …` que llama a algo, construir mallas, etc.) solo puede usar lo que ya se ha cargado
-antes en el manifiesto. Las funciones se pueden llamar desde cualquier sitio, porque cuando de verdad
-se llaman ya está todo cargado.
+Todos los `<script defer>` del juego se descargan en paralelo y se ejecutan en orden en el ámbito
+global compartido, cada uno con `'use strict';` en su cabecera. Es cómodo porque no hace falta
+`import`/`export` ni compilación, pero tiene dos reglas: no repetir nombres de primer nivel entre
+archivos, y lo que se ejecuta **al cargar** (un `const X = …` que llama a algo, construir mallas,
+etc.) solo puede usar lo que ya se ha ejecutado en un `<script>` anterior de `index.html`. Las
+funciones se pueden llamar desde cualquier sitio, porque cuando se ejecutan ya está todo cargado.
 
-El último archivo, `core/boot.js`, aplica las opciones guardadas y el idioma, arranca la batalla
+Mientras tanto, los modelos (`.heli` + `.png`), las texturas y los efectos de sonido (`assets/audio/sfx.json`
++ `.mp3`) se descargan en paralelo sin bloquear el arranque; la música de la intro y el vídeo final
+se cargan en *streaming* solo en su misión.
+
+El último archivo, `src/js/core/boot.js`, aplica las opciones guardadas y el idioma, arranca la batalla
 de fondo de la pantalla de título (`startAttract`) y lanza el bucle.
 
 ## 2. El bucle

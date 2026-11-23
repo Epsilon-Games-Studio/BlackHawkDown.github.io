@@ -5,6 +5,8 @@
  * Todo lo demás cuelga de aquí, así que va lo primero.
  * ================================================================================================== */
 
+'use strict';
+
 const T = THREE;
 const W = 768,
   H = 768,
