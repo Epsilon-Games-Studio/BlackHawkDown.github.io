@@ -1,7 +1,0 @@
-# lo genera tools/build.py
-dist/
-# capturas de la prueba de humo
-tools/out/
-node_modules/
-__pycache__/
-.DS_Store
