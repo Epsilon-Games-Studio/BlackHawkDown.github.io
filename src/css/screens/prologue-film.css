@@ -1,0 +1,94 @@
+/* Las dos cinemáticas de la introducción: el fundido a negro y el rótulo del sitio abajo a la izquierda.
+   Lo demás (la radio arriba, los botones de cámara y «Saltar escena») es lo de cualquier cinemática del juego. */
+#filmUI {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  display: none;
+  z-index: 5;
+}
+#filmUI.on {
+  display: block;
+}
+.film-fade {
+  position: absolute;
+  inset: 0;
+  background: #050504;
+  opacity: 1;
+}
+.film-tag {
+  position: absolute;
+  left: max(16px, env(safe-area-inset-left, 0px));
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 22px);
+  max-width: min(560px, calc(100vw - 110px));
+  padding: 9px 14px 9px 13px;
+  background: rgba(14, 15, 10, 0.74);
+  border-left: 3px solid var(--acc);
+  font-family: var(--f-ui);
+  color: var(--fg);
+  opacity: 0;
+  transform: translateY(6px);
+  transition:
+    opacity 0.5s ease 0.35s,
+    transform 0.5s ease 0.35s;
+}
+.film-tag.on {
+  opacity: 1;
+  transform: none;
+}
+.film-tag b {
+  display: block;
+  font-weight: 700;
+  font-size: 17px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+.film-tag span {
+  display: block;
+  margin-top: 3px;
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  color: var(--dim);
+}
+.film-tag span:empty {
+  display: none;
+}
+@media (max-width: 700px) {
+  .film-tag {
+    max-width: calc(100vw - 90px);
+  }
+  .film-tag b {
+    font-size: 14px;
+  }
+  .film-tag span {
+    font-size: 12px;
+  }
+}
+/* el título al final de la introducción, sobre negro */
+.intro-title {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%) scale(0.985);
+  text-align: center;
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: clamp(24px, 6.4vw, 92px);
+  white-space: nowrap;
+  letter-spacing: 0.14em;
+  padding-left: 0.14em;
+  color: #e9e3d2;
+  text-shadow: 0 0 30px rgba(0, 0, 0, 0.9);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 1.3s ease,
+    transform 5.5s ease-out;
+}
+.intro-title.on {
+  opacity: 1;
+  transform: translateY(-50%) scale(1.03);
+}
