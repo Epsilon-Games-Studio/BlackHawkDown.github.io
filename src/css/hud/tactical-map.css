@@ -1,0 +1,87 @@
+/* ================================================================================================
+ * hud/tactical-map.css
+ *
+ * El panel del mapa táctico a pantalla completa.
+ * ============================================================================================== */
+
+#mapPanel {
+  position: fixed;
+  inset: 0;
+  z-index: 8;
+  background: rgba(10, 10, 8, 0.92);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: calc(env(safe-area-inset-top, 0px) + 10px) 10px calc(env(safe-area-inset-bottom, 0px) + 8px);
+}
+#mapPanel[hidden] {
+  display: none !important;
+}
+.mp-head {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.mp-head b {
+  font-family: var(--f-ui);
+  font-size: 18px;
+  letter-spacing: 0.04em;
+  margin-right: auto;
+}
+.mp-tabs {
+  display: flex;
+  gap: 4px;
+}
+.mp-view {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  border: 1px solid var(--line);
+  background: #0e0f0a;
+  overflow: hidden;
+}
+#mpCanvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  cursor: grab;
+}
+.mp-ctl {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.mp-ctl button {
+  width: 46px;
+  height: 46px;
+  font-size: 22px;
+  padding: 0;
+}
+.mp-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--f-data);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--fg);
+}
+.mp-hint {
+  font-size: 12px;
+  color: var(--dim);
+}
+@media (prefers-reduced-motion: reduce) {
+  #log div {
+    transition: none;
+  }
+}
+[hidden] {
+  display: none !important;
+}

@@ -1,0 +1,89 @@
+/* ================================================================================================
+ * base.css
+ *
+ * Base: variables de color y tipografía, el lienzo 3D a pantalla completa y los botones.
+ * La idea del HUD: vista 3D de baja resolución con un marco militar (estado arriba, cámara a la derecha,
+ * órdenes y fichas de unidades abajo).
+ * ============================================================================================== */
+
+:root {
+  --bg: #14150f;
+  --panel: rgba(22, 23, 16, 0.88);
+  --panel2: #23251b;
+  --line: #44463a;
+  --fg: #ece5cd;
+  --dim: #a19b80;
+  --acc: #e7a63d;
+  --acc-ink: #1a1408;
+  --ok: #9cc25e;
+  --warn: #e7a63d;
+  --bad: #e05a42;
+  --sel: #5fa2ff;
+  --ft: #7fb7c4;
+  --f-display: 'Saira Stencil One', 'Impact', 'Arial Black', sans-serif;
+  --f-ui: 'Barlow Condensed', 'Arial Narrow', 'Helvetica Neue', sans-serif;
+  --f-data: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', monospace;
+  color-scheme: dark;
+}
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--fg);
+}
+body {
+  font-family: var(--f-ui);
+  font-size: 15px;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+body.att-blur #view {
+  filter: blur(10px) brightness(0.8);
+  transition: none;
+}
+#view {
+  transition: filter 0.9s ease;
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  touch-action: none;
+  background: var(--bg);
+}
+#hud {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: calc(env(safe-area-inset-top, 0px) + 10px) 16px calc(env(safe-area-inset-bottom, 0px) + 10px);
+}
+button {
+  font-family: var(--f-ui);
+  font-weight: 600;
+  color: var(--fg);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  cursor: pointer;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: 14px;
+  padding: 7px 10px;
+  line-height: 1;
+}
+button:focus-visible {
+  outline: 2px solid var(--acc);
+  outline-offset: 1px;
+}
+button[aria-pressed='true'] {
+  background: var(--acc);
+  color: var(--acc-ink);
+  border-color: var(--acc);
+}

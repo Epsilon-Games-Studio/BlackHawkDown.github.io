@@ -1,0 +1,25 @@
+/* ================================================================================================
+ * screens/title.css
+ *
+ * Ajustes finos de la pantalla de título.
+ * ============================================================================================== */
+
+/* el título siempre en dos líneas: "Black Hawk" no se parte nunca */
+.tt-h {
+  white-space: nowrap;
+}
+/* móviles en vertical: el título se queda en la parte de arriba de la pantalla */
+@media (max-aspect-ratio: 4/5) {
+  .title-scr {
+    justify-content: flex-start;
+    padding-top: calc(9vh + env(safe-area-inset-top, 0px) + 4vh);
+    gap: 14px;
+  }
+  .tt-h {
+    font-size: min(13.5vw, 120px);
+  }
+  .tt-date {
+    font-size: 12px;
+    letter-spacing: 0.22em;
+  }
+}

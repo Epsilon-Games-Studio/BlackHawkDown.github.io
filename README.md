@@ -1,15 +1,18 @@
-#  Black Hawk Down
+# Mogadiscio '93 · Black Hawk Down
 
 Juego táctico en tiempo real con pausa sobre la batalla de Mogadiscio del 3 y 4 de octubre de 1993.
-Autor, Jesús Navas Aller, bajo el nombre de **Épsilon Games Studio**.
+Lo hago yo, Jesús Navas Aller, bajo el nombre de **Épsilon Games Studio**.
 
-
+Mandas a los Rangers y a los Delta calle a calle: los mueves por puntos, los pones a cubierto, pides
+pasadas de Little Bird, cargas con los heridos y, si hace falta, con los muertos, porque aquí no se deja
+a nadie atrás. La campaña sigue la cronología real, desde la Operación Irene hasta la Milla, y hay un
+tutorial en la base de la Task Force Ranger para aprender a jugar antes de salir.
 
 Se juega en el navegador, tanto en el ordenador como en el móvil en vertical.
 
 ---
 
-## Arrannque
+## Arrancarlo en tu ordenador
 
 Solo hace falta **Python 3**. No hay que instalar nada más.
 
@@ -32,7 +35,7 @@ python3 tools/build.py
 Deja en `dist/` todo lo que hay que subir:
 
 - `index.html`: el juego entero en un solo archivo, sin comentarios ni sangrías para que pese menos.
-- `music.js`, `sounds.js`, `video.js`, `videow.js`, `embed.js`, `embed2.js` y `embed3.js`: los paquetes
+- `music.js`, `sounds.js`, `video.js`, `videow.js`, `embed.js`, `embed2.js`, `embed3.js` y `embed4.js`: los paquetes
   grandes (música, sonidos, vídeos y modelos 3D). Casi nunca cambian, así que después de la primera
   vez normalmente basta con subir `index.html`.
 
@@ -57,7 +60,8 @@ BHD/
 ├── README.md              ← esto
 ├── docs/
 │   ├── ARQUITECTURA.md    ← cómo funciona el juego por dentro
-│   └── RECETAS.md         ← paso a paso: añadir una misión, un modelo, un texto…
+│   ├── RECETAS.md         ← paso a paso: añadir una misión, un modelo, un texto…
+│   └── ANIMACIONES.md     ← las 188 animaciones y qué dispara cada una
 ├── src/                   ← TODO el código fuente
 │   ├── index.html         ← la plantilla de la página (el build la rellena)
 │   ├── html/              ← el HTML de cada parte: logo, HUD, pantallas, mapa

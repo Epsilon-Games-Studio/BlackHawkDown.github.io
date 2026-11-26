@@ -1,0 +1,128 @@
+/* ================================================================================================
+ * screens/loading.css
+ *
+ * Pantalla de carga de misión.
+ * ============================================================================================== */
+
+.ldscr {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  background:
+    radial-gradient(120% 90% at 50% 40%, rgba(40, 40, 28, 0.82), rgba(10, 10, 7, 0.97)),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.018) 0 1px, transparent 1px 3px);
+}
+.ldscr[hidden] {
+  display: none;
+}
+.ld-in {
+  width: min(520px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.ld-eye {
+  font-family: var(--f-data);
+  font-size: 12px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--acc);
+}
+.ld-eye::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 10px;
+  background: var(--acc);
+  vertical-align: 1px;
+  animation: ttBlink 1s steps(1, end) infinite;
+}
+.ld-title {
+  margin: 0;
+  font-family: var(--f-display);
+  font-weight: 400;
+  font-size: clamp(30px, 8vw, 46px);
+  line-height: 1;
+  color: var(--fg);
+}
+.ld-sub {
+  font-family: var(--f-data);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.ld-bar {
+  position: relative;
+  height: 10px;
+  margin-top: 14px;
+  border: 1px solid var(--line);
+  background: rgba(0, 0, 0, 0.35);
+}
+.ld-bar i {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  background: repeating-linear-gradient(-45deg, var(--acc) 0 6px, #c98a26 6px 12px);
+  transition: width 0.25s linear;
+}
+.ld-bar b {
+  position: absolute;
+  top: -4px;
+  bottom: -4px;
+  width: 1px;
+  background: var(--line);
+}
+.ld-bar b:nth-of-type(1) {
+  left: 25%;
+}
+.ld-bar b:nth-of-type(2) {
+  left: 50%;
+}
+.ld-bar b:nth-of-type(3) {
+  left: 75%;
+}
+.ld-bar b:nth-of-type(4) {
+  display: none;
+}
+.ld-step {
+  font-family: var(--f-data);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--fg);
+  min-height: 1.3em;
+}
+.ld-tip {
+  margin: 18px 0 0;
+  padding: 12px 14px;
+  border-left: 3px solid var(--acc);
+  background: rgba(58, 74, 44, 0.35);
+  font-family: 'Caveat', cursive;
+  font-size: 21px;
+  line-height: 1.2;
+  color: #efe6c8;
+}
+.ld-tip em {
+  display: block;
+  margin-bottom: 4px;
+  font-style: normal;
+  font-family: var(--f-data);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+@media (prefers-reduced-motion: reduce) {
+  .ld-bar i {
+    transition: none;
+  }
+  .ld-eye::before {
+    animation: none;
+  }
+}

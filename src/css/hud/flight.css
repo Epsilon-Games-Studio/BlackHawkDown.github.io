@@ -1,0 +1,93 @@
+/* ================================================================================================
+ * hud/flight.css
+ *
+ * Durante el vuelo de Irene y las cinemáticas: fichas en vuelo, controles de cámara y botón de saltar.
+ * ============================================================================================== */
+
+.card.busy {
+  opacity: 0.85;
+  border-style: dashed;
+}
+#flyUnits {
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 14px);
+  z-index: 7;
+  display: none;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  justify-content: safe center;
+}
+#flyUnits::-webkit-scrollbar {
+  display: none;
+}
+body.cine #flyUnits {
+  display: flex;
+}
+#flyUnits .card {
+  width: 136px;
+}
+#flyUnits .cs b {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+@media (max-width: 700px) {
+  #flyUnits {
+    justify-content: flex-start;
+  }
+  #flyUnits .card {
+    width: 128px;
+  }
+}
+body.cine #cine {
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 112px);
+}
+#flyCam {
+  position: fixed;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 7;
+  display: none;
+  flex-direction: column;
+  gap: 8px;
+}
+body.cine #flyCam {
+  display: flex;
+}
+#flyCam button {
+  width: 46px;
+  height: 46px;
+  font-size: 20px;
+  padding: 0;
+}
+#bSkip {
+  position: fixed;
+  top: calc(env(safe-area-inset-top, 0px) + 14px);
+  right: 16px;
+  z-index: 7;
+  padding: 10px 14px;
+}
+#cine {
+  position: fixed;
+  left: 50%;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 28px);
+  transform: translateX(-50%);
+  z-index: 7;
+  max-width: min(640px, calc(100vw - 32px));
+  text-align: center;
+  font-family: var(--f-ui);
+  font-weight: 600;
+  font-size: 18px;
+  letter-spacing: 0.04em;
+  color: var(--fg);
+  background: rgba(14, 15, 10, 0.72);
+  border-left: 3px solid var(--acc);
+  padding: 8px 14px;
+}
+body.cine #hud {
+  display: none;
+}

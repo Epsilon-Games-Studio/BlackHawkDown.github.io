@@ -1,0 +1,100 @@
+/* ================================================================================================
+ * hud/top-bar.css
+ *
+ * La barra de arriba: panel de la misión con su reloj, subobjetivos y el registro de mensajes.
+ * ============================================================================================== */
+
+#top {
+  pointer-events: none;
+  padding-right: 54px;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.mission {
+  width: min(440px, calc(100vw - 86px));
+  box-sizing: border-box;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  padding: 7px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.mrow {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+#clock {
+  font-family: var(--f-data);
+  font-size: 16px;
+  color: var(--acc);
+  font-variant-numeric: tabular-nums;
+}
+#obj {
+  font-size: 15px;
+  font-weight: 600;
+}
+#tally {
+  font-family: var(--f-data);
+  font-size: 12px;
+  color: var(--dim);
+  font-variant-numeric: tabular-nums;
+}
+.topbtns {
+  display: flex;
+  gap: 6px;
+  pointer-events: auto;
+}
+.mission {
+  pointer-events: auto;
+  cursor: pointer;
+  position: relative;
+  padding-right: 28px;
+}
+.mission:not(.open) #subs,
+.mission:not(.open) #tally {
+  display: none;
+}
+.mchev {
+  position: absolute;
+  right: 11px;
+  top: 12px;
+  color: var(--dim);
+}
+#log {
+  position: fixed;
+  left: 16px;
+  top: calc(env(safe-area-inset-top, 0px) + 150px);
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  pointer-events: none;
+  max-width: min(360px, 70vw);
+}
+#log div {
+  font-size: 14px;
+  font-weight: 600;
+  background: rgba(14, 15, 10, 0.72);
+  padding: 3px 7px;
+  border-left: 2px solid var(--acc);
+  transition: opacity 0.6s;
+}
+#log div.us {
+  border-color: var(--sel);
+}
+#log div.bad {
+  border-color: var(--bad);
+}

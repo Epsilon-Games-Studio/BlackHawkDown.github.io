@@ -1,0 +1,119 @@
+<!-- Todas las pantallas fuera de la partida, dentro de #overlay. Solo se ve una cada vez (showScreen()). -->
+<div id="overlay" class="ov-title">
+  <section id="scrTitle" class="title-scr" aria-label="Pantalla de título" tabindex="0">
+    <span class="tt-date">Mogadiscio · 3 y 4 de octubre de 1993</span>
+    <h1 class="tt-h">Black Hawk<br><span>Down</span></h1>
+    <span class="tt-rule" aria-hidden="true"></span>
+    <p class="tt-credit">Creado y desarrollado por <b>Jesús Navas Aller</b></p>
+    <p class="tt-press">Pulsa cualquier tecla para continuar</p>
+    <span class="tt-ver">v. 17·11·2026 f</span>
+  </section>
+
+  <nav id="scrMenu" class="menu-scr" aria-label="Menú principal" hidden>
+    <div><h1 class="mm-h">Black Hawk<br><span>Down</span></h1><span class="mm-sub">Mogadiscio · 3 y 4 de octubre de 1993</span></div>
+    <div class="mm-list">
+      <button id="mCont" hidden><span>Continuar</span><em></em></button>
+      <button id="mCamp"><span>Campaña</span><em>10 misiones, de Irene a La Milla</em></button>
+      <button id="mTut"><span>Tutorial</span><em>Las órdenes básicas en la avenida</em></button>
+      <button id="mMan"><span>Manual de campo</span><em>Apuntes para volver con vida</em></button>
+      <button id="mOpts"><span>Opciones</span><em>Sonido, controles y calidad</em></button>
+      <button id="mCred"><span>Créditos</span></button>
+    </div>
+    <div class="langrow" role="group" aria-label="Idioma"><span>Idioma</span><button class="langbtn" data-lang="es" aria-pressed="true">Español</button><button class="langbtn" data-lang="en" aria-pressed="false">English</button></div>
+    <span class="mm-foot">Prototipo 0.59 · Jesús Navas Aller</span>
+  </nav>
+
+  <section id="scrCamp" class="brief wide" aria-label="Campaña" hidden>
+    <span class="date">3 Y 4 OCT 1993 · MOGADISCIO</span>
+    <h1 class="sm">Campaña</h1>
+    <div class="tl" id="campTl"></div>
+    <ol class="camp" id="campList"></ol>
+    <div class="gorow"><button id="campBack">Menú principal</button><button id="campIntro">Ver la introducción</button></div>
+  </section>
+
+  <div class="brief" id="brief" hidden>
+    <span class="date" id="bDate">3 OCT 1993 · MOGADISCIO</span>
+    <span class="eyebrow" id="bEyebrow">Misión</span>
+    <h1 id="bTitle">Black Hawk Down</h1>
+    <div class="mcard"><span class="eyebrow">Objetivo</span><b id="bName" hidden></b><span id="bCard"></span></div>
+    <p id="bText"></p>
+    <dl class="meta"><dt>Lugar</dt><dd id="bPlace"></dd><dt>Fuerza</dt><dd id="bSquad"></dd><dt>Secundarios</dt><dd id="bOpt"></dd></dl>
+    <details class="ctrls"><summary>Controles</summary>
+    <ul>
+      <li><b>Pausa táctica:</b> Espacio o el botón Pausa. Con el juego parado puedes dar todas las órdenes que quieras. "Auto" para el juego solo con cada contacto, cada caído, los refuerzos y cada objetivo nuevo. Esc abre el menú.</li>
+      <li><b>Mover:</b> selecciona soldados y toca el suelo con un toque breve. Arrastrar siempre mueve la cámara y nunca da órdenes. Cada toque añade un punto a la ruta; al seleccionar de nuevo (o con el botón Ruta) empieza una ruta nueva. Con Formación eliges cómo marcha la unidad.</li>
+      <li><b>Dibujar una ruta:</b> mantén pulsado un soldado ya seleccionado y arrastra (se puede desactivar en Opciones).</li>
+      <li><b>Grupos:</b> toca la tarjeta de una unidad Romeo o Kilo para seleccionarlo entero; doble toque en un soldado selecciona su grupo; las teclas 1 a 9 también. Si alguien está herido, su tarjeta parpadea: ámbar herido, rojo grave o caído.</li>
+      <li><b>Atacar y suprimir:</b> toca un enemigo visible para atacarlo. Suprimir barre una zona: casi no mata, pero clava al enemigo al suelo.</li>
+      <li><b>Cubrirse:</b> cada soldado busca la mejor cobertura cercana frente a la amenaza.</li>
+      <li><b>Edificios:</b> con soldados seleccionados toca un edificio y elige planta baja o azotea.</li>
+      <li><b>Caídos:</b> el sanitario corre solo a levantar a los caídos; cualquier compañero a su lado también puede, más despacio.</li>
+      <li><b>Apoyo aéreo:</b> Little Bird: arrastra la franja de la pasada (máx. 50 m). Todo lo que quede dentro cae, también los tuyos. Bengala (solo de noche) ilumina unos 100 m; Delta lleva visores (V).</li>
+      <li><b>Columna:</b> el símbolo azul de la OTAN marca dónde está la columna de vehículos. No se puede seleccionar.</li>
+      <li><b>Cámara:</b> arrastra para desplazar, pellizca para zoom, gira con dos dedos o con los botones. "Techos" recorta los edificios. N abre el mapa.</li>
+    </ul></details>
+    <div class="keep"><div class="gorow"><button class="go" id="bStart">Comenzar misión</button><button id="bPeek" aria-pressed="false">Ver escenario</button><button id="bMap2">Mapa</button><button id="bBack">Campaña</button><button id="bFinale" class="devbtn" hidden title="Solo en la versión de desarrollo">Ver cinemática final · desarrollo</button></div></div>
+  </div>
+
+  <div class="brief" id="endScr" aria-live="polite" hidden></div>
+
+  <section id="scrOpts" class="brief" aria-label="Opciones" hidden>
+    <h1 class="sm">Opciones</h1>
+    <div class="opts">
+      <button id="opSound" class="optrow" aria-pressed="true"><span>Sonido</span><em>Sí</em></button>
+      <button id="opAuto" class="optrow" aria-pressed="true"><span>Pausa automática con contactos, caídos y objetivos nuevos</span><em>Sí</em></button>
+      <button id="opDraw" class="optrow" aria-pressed="true"><span>Dibujar la ruta manteniendo pulsado un soldado seleccionado</span><em>Sí</em></button>
+      <button id="opMusic" class="optrow" aria-pressed="true"><span>Música</span><em>Sí</em></button>
+      <button id="opRays" class="optrow" aria-pressed="true"><span>Rayos de luz</span><em>Sí</em></button>
+      <div class="optrow"><span>Idioma</span><div class="seg" role="group" aria-label="Idioma"><button class="langbtn" data-lang="es">Español</button><button class="langbtn" data-lang="en">English</button></div></div>
+      <div class="optrow"><span>Calidad de imagen</span><div id="opQ" class="seg" role="group" aria-label="Calidad"><button data-q="0.75">Ultra</button><button data-q="1">Alta</button><button data-q="1.5">Media</button><button data-q="2.5">Baja</button></div></div>
+      <div class="optrow"><span>Gráficos</span><div id="opG" class="seg" role="group" aria-label="Gráficos"><button data-g="high">Alto</button><button data-g="mid">Medio</button><button data-g="low">Bajo</button></div></div>
+      <button id="opDyn" class="optrow" aria-pressed="true"><span>Resolución dinámica</span><em>Sí</em></button>
+      <button id="opFps" class="optrow" aria-pressed="false"><span>Contador de FPS</span><em>No</em></button>
+    </div>
+    <p class="hintp">Arrastrar por la pantalla siempre mueve la cámara. Solo un toque breve en el suelo da la orden de mover.</p>
+    <div class="gorow"><button class="go" id="opBack">Volver</button></div>
+  </section>
+
+  <section id="scrCred" class="brief" aria-label="Créditos" hidden>
+    <h1 class="sm">Créditos</h1>
+    <dl class="cred">
+      <dt>Creado y desarrollado por</dt><dd><b>Jesús Navas Aller</b></dd>
+      <dt>Basado en</dt><dd>La batalla de Mogadiscio del 3 y 4 de octubre de 1993. Inspirado en el libro de Mark Bowden y en la película de Ridley Scott.</dd>
+      <dt>Nombres</dt><dd>Mandos, pilotos, francotiradores y operadores de Delta llevan los nombres reales de la batalla. El resto de soldados son ficticios.</dd>
+      <dt>Motor 3D</dt><dd>Three.js r128, licencia MIT</dd>
+      <dt>Tipografías</dt><dd>Saira Stencil One, Barlow Condensed e IBM Plex Mono</dd>
+    </dl>
+    <p class="hintp">En recuerdo de los dieciocho soldados estadounidenses, el soldado malasio y los cientos de somalíes que murieron en aquellos dos días.</p>
+    <div class="gorow"><button class="go" id="credBack">Volver</button></div>
+  </section>
+
+  <section id="scrPause" class="brief narrow" aria-label="Pausa" hidden>
+    <h1 class="sm">Pausa</h1>
+    <div class="mm-list">
+      <button id="pResume"><span>Reanudar</span></button>
+      <button id="pRestart"><span>Reiniciar misión</span></button>
+      <button id="pOpts"><span>Opciones</span></button>
+      <button id="pQuit"><span>Menú principal</span></button>
+    </div>
+  </section>
+
+  <section id="scrLoad" class="ldscr" aria-live="polite" hidden>
+    <div class="ld-in">
+      <span class="ld-eye" id="ldEye">Cargando misión</span>
+      <h2 class="ld-title" id="ldTitle">Mogadiscio</h2>
+      <span class="ld-sub" id="ldSub"></span>
+      <div class="ld-bar" role="progressbar" aria-label="Carga" aria-valuemin="0" aria-valuemax="100"><i id="ldFill"></i><b></b><b></b><b></b><b></b></div>
+      <span class="ld-step" id="ldStep"></span>
+      <p class="ld-tip"><em>Manual de campo</em><span id="ldTip"></span></p>
+    </div>
+  </section>
+  <section id="scrMan" class="man-scr" aria-label="Manual de campo" hidden>
+    <div class="man-book" id="manBook"></div>
+    <nav class="man-nav">
+      <button id="manPrev" aria-label="Página anterior">‹</button><span id="manPg"></span><button id="manNext" aria-label="Página siguiente">›</button>
+      <button id="manClose" class="man-close">Cerrar</button>
+    </nav>
+  </section>
+  <section id="scrIntro" class="intro-scr" aria-live="polite" hidden><p id="introLine" class="intro-line"></p><button id="introSkip">Saltar</button></section>
+</div>

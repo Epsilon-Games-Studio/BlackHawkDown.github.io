@@ -1,0 +1,463 @@
+/* ================================================================================================
+ * screens/field-manual.css
+ *
+ * El manual de campo: la libreta verde del sargento, con sus hojas, manchas de café y letra a mano.
+ * ============================================================================================== */
+
+.man-scr {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: calc(env(safe-area-inset-top, 0px) + 12px) 12px calc(env(safe-area-inset-bottom, 0px) + 10px);
+  background: radial-gradient(90% 70% at 50% 45%, #4a3d2a, #1d170f 75%), #1d170f;
+}
+.man-scr[hidden] {
+  display: none;
+}
+.man-book {
+  position: relative;
+  width: min(700px, 100%);
+  height: min(900px, calc(100dvh - 90px));
+  perspective: 1600px;
+  -webkit-user-select: text;
+  user-select: text;
+}
+.man-book.turnR > * {
+  animation: manR 0.32s ease-out;
+}
+.man-book.turnL > * {
+  animation: manL 0.32s ease-out;
+}
+@keyframes manR {
+  from {
+    transform: rotateY(-14deg) translateX(18px);
+    opacity: 0.3;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+@keyframes manL {
+  from {
+    transform: rotateY(14deg) translateX(-18px);
+    opacity: 0.3;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+.man-cover {
+  position: absolute;
+  inset: 0;
+  border-radius: 6px 14px 14px 6px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 24px;
+  text-align: center;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+    radial-gradient(120% 90% at 40% 30%, #5d6b3c, #3f4a27 60%, #2c341b);
+  box-shadow:
+    inset 0 0 60px rgba(0, 0, 0, 0.55),
+    inset 14px 0 18px -8px rgba(0, 0, 0, 0.6),
+    0 18px 40px rgba(0, 0, 0, 0.6);
+  color: #e9e2c4;
+}
+.mc-strip {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 26px;
+  background: linear-gradient(90deg, #252c16, #3a4424);
+  box-shadow: inset -3px 0 6px rgba(0, 0, 0, 0.5);
+}
+.mc-stencil {
+  font-family: var(--f-display);
+  font-size: clamp(34px, 9vw, 58px);
+  line-height: 1;
+  letter-spacing: 0.04em;
+  color: #e7dfbd;
+  opacity: 0.88;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+}
+.mc-sub {
+  font-family: 'Special Elite', var(--f-data);
+  font-size: clamp(13px, 3.4vw, 17px);
+  letter-spacing: 0.12em;
+  color: #d9d1ad;
+  opacity: 0.85;
+}
+.mc-label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 10px;
+  padding: 12px 22px;
+  background: #e9e1c6;
+  color: #2b2a26;
+  transform: rotate(-1.5deg);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
+  font-family: 'Caveat', cursive;
+  font-size: 24px;
+  line-height: 1.15;
+}
+.mc-ring {
+  position: absolute;
+  left: -60px;
+  bottom: -50px;
+  width: 300px;
+  height: 241px;
+  background: url('@asset/img/mancha-cafe.png') center/contain no-repeat;
+  opacity: 0.55;
+  mix-blend-mode: multiply;
+  transform: rotate(22deg);
+  pointer-events: none;
+}
+.mc-stamp {
+  font-family: 'Special Elite', var(--f-data);
+  font-size: 20px;
+  letter-spacing: 0.2em;
+  color: #b5332a;
+  border: 3px double #b5332a;
+  padding: 4px 12px;
+  transform: rotate(-9deg);
+  opacity: 0.8;
+}
+.mc-open {
+  margin-top: 18px;
+  padding: 12px 22px;
+  font-family: var(--f-ui);
+  font-weight: 700;
+  font-size: 17px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--acc-ink);
+  background: var(--acc);
+  border: 0;
+  border-radius: 2px;
+  cursor: pointer;
+}
+.man-page {
+  position: absolute;
+  inset: 0;
+  border-radius: 3px 8px 8px 3px;
+  overflow: hidden;
+  color: #24283a;
+  background:
+    linear-gradient(90deg, transparent 46px, rgba(196, 72, 60, 0.55) 46px 48px, transparent 48px),
+    repeating-linear-gradient(180deg, transparent 0 33px, rgba(86, 120, 170, 0.32) 33px 34px),
+    radial-gradient(130% 100% at 50% 40%, #f6f0dc, #ece2c5 80%, #dfd2ae);
+  background-position:
+    0 0,
+    0 18px,
+    0 0;
+  box-shadow:
+    0 18px 40px rgba(0, 0, 0, 0.6),
+    inset 0 0 40px rgba(120, 90, 40, 0.18);
+}
+.man-page::before {
+  content: '';
+  position: absolute;
+  left: 14px;
+  top: 0;
+  bottom: 0;
+  width: 14px;
+  background: radial-gradient(circle at 7px 50%, #2a2318 5px, transparent 6px) 0 0/14px 64px repeat-y;
+  opacity: 0.8;
+}
+.man-page.stain::after {
+  content: '';
+  position: absolute;
+  right: -70px;
+  bottom: -40px;
+  width: 330px;
+  height: 265px;
+  background: url('@asset/img/mancha-cafe.png') center/contain no-repeat;
+  mix-blend-mode: multiply;
+  opacity: 0.75;
+  transform: rotate(-14deg);
+  pointer-events: none;
+}
+.man-page.stain2::after {
+  right: auto;
+  bottom: auto;
+  left: 120px;
+  top: -60px;
+  width: 260px;
+  height: 209px;
+  opacity: 0.55;
+  transform: rotate(38deg);
+}
+.mp-in {
+  position: absolute;
+  inset: 18px 18px 34px 60px;
+  overflow: hidden;
+  font-family: 'Caveat', 'Segoe Print', 'Bradley Hand', cursive;
+  font-size: 22px;
+  line-height: 34px;
+  -webkit-overflow-scrolling: touch;
+}
+.mp-in h3 {
+  margin: 0 0 6px;
+  font-family: 'Special Elite', var(--f-data);
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 34px;
+  color: #1f2433;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 5px;
+}
+.mp-in ul,
+.mp-in ol {
+  margin: 0;
+  padding-left: 22px;
+}
+.mp-in li {
+  margin: 0 0 2px;
+}
+.mp-in ul li::marker {
+  content: '– ';
+}
+.mp-in p {
+  margin: 0 0 4px;
+}
+.mp-in b {
+  font-weight: 700;
+  color: #141a2c;
+}
+.mp-in .red,
+.mp-in b.red {
+  color: #b33a2c;
+}
+.mp-in .hl {
+  background: linear-gradient(transparent 45%, rgba(242, 214, 74, 0.6) 45% 88%, transparent 88%);
+}
+.mp-in u {
+  text-decoration-color: #b33a2c;
+  text-decoration-thickness: 2px;
+}
+.mp-in .note {
+  font-size: 19px;
+  color: #5a5c66;
+  transform: rotate(-0.8deg);
+}
+.mp-in ol.toc {
+  padding-left: 34px;
+}
+.mp-in .toc li {
+  cursor: pointer;
+  font-size: 24px;
+}
+.mp-in .toc li:hover {
+  color: #b33a2c;
+}
+.mp-in .sign {
+  margin-top: 16px;
+  font-size: 28px;
+  color: #b33a2c;
+  transform: rotate(-2deg);
+}
+.mp-in .sign span {
+  font-size: 20px;
+  color: #3c4052;
+}
+.mp-in .kb {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  margin: 0 2px;
+  vertical-align: -8px;
+  border: 1.5px solid #3a3f52;
+  border-radius: 5px;
+  color: #2a2f42;
+  background: rgba(255, 255, 255, 0.35);
+}
+.mp-in .kb svg {
+  width: 20px;
+  height: 20px;
+}
+.mp-in .kb small {
+  font-family: var(--f-data);
+  font-size: 9px;
+  letter-spacing: 0;
+}
+.mp-in table.keys {
+  border-collapse: collapse;
+  width: 100%;
+}
+.mp-in table.keys td {
+  padding: 0 6px 0 0;
+  vertical-align: middle;
+  line-height: 30px;
+}
+.mp-in table.keys td:first-child {
+  white-space: nowrap;
+  width: 1%;
+}
+.mp-in table.mat td {
+  vertical-align: top;
+  padding-bottom: 6px;
+  line-height: 28px;
+}
+.mp-in table.mat td:first-child {
+  white-space: normal;
+  width: 34%;
+  padding-right: 10px;
+}
+.mp-in .tight li {
+  line-height: 28px;
+  margin-bottom: 6px;
+}
+.mp-in .sk {
+  display: block;
+  width: 100%;
+  max-width: 470px;
+  max-height: min(46vh, 330px);
+  margin: 6px 0 8px;
+  overflow: visible;
+}
+.sk .pen {
+  fill: none;
+  stroke: #34384a;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.sk .thin {
+  stroke-width: 0.95;
+}
+.sk .bold {
+  stroke-width: 2.4;
+}
+.sk .lt {
+  stroke-width: 0.7;
+  opacity: 0.4;
+}
+.sk .hl {
+  stroke-width: 0.75;
+  opacity: 0.62;
+}
+.sk .hl2 {
+  stroke-width: 0.7;
+  opacity: 0.3;
+}
+.sk .hl3 {
+  stroke-width: 0.8;
+  opacity: 0.75;
+}
+.sk .dash {
+  stroke-dasharray: 6 5;
+}
+.sk .red {
+  stroke: #b33a2c;
+}
+.sk text.red {
+  fill: #b33a2c;
+  stroke: none;
+}
+.sk .fillp {
+  fill: #f1ead3;
+}
+.sk .fillr {
+  fill: rgba(179, 58, 44, 0.1);
+}
+.sk .hand {
+  font-family: 'Caveat', cursive;
+  font-size: 17px;
+  fill: #2e3242;
+}
+.sk .small {
+  font-size: 14px;
+}
+.sk .big {
+  font-size: 26px;
+  font-weight: 700;
+}
+.sk .nost {
+  stroke: none;
+}
+.mp-n {
+  position: absolute;
+  right: 16px;
+  bottom: 6px;
+  font-family: 'Caveat', cursive;
+  font-size: 18px;
+  color: #6a6658;
+}
+.man-nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--f-data);
+  font-size: 13px;
+  color: #e8dcb8;
+}
+.man-nav button {
+  min-width: 44px;
+  height: 40px;
+  padding: 0 12px;
+  font-size: 24px;
+  line-height: 1;
+  color: #efe6c8;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(232, 220, 184, 0.35);
+  border-radius: 3px;
+  cursor: pointer;
+}
+.man-nav button:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+.man-nav .man-close {
+  font-family: var(--f-ui);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-left: 10px;
+}
+@media (max-width: 520px) {
+  .mp-in {
+    inset: 14px 10px 30px 50px;
+    font-size: 20px;
+    line-height: 31px;
+  }
+  .man-page {
+    background-size:
+      auto,
+      auto 31px,
+      auto;
+    background-position:
+      0 0,
+      0 14px,
+      0 0;
+  }
+  .mp-in h3 {
+    font-size: 21px;
+    line-height: 31px;
+  }
+  .mp-in table.keys td {
+    line-height: 28px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .man-book.turnR > *,
+  .man-book.turnL > * {
+    animation: none;
+  }
+}

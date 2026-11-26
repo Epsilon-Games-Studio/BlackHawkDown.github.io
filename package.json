@@ -1,0 +1,19 @@
+{
+  "name": "mogadiscio-93",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Mogadiscio '93 · Black Hawk Down — juego táctico en tiempo real con pausa. Épsilon Games Studio.",
+  "author": "Jesús Navas Aller",
+  "scripts": {
+    "build": "python3 tools/build.py",
+    "build:dev": "python3 tools/build.py --dev",
+    "dev": "python3 tools/serve.py --dev",
+    "format": "prettier --write \"src/js/**/*.js\" \"src/css/**/*.css\"",
+    "verify": "node tools/verify.mjs",
+    "test": "python3 tools/build.py --debug && python3 tools/smoke_test.py"
+  },
+  "devDependencies": {
+    "acorn": "^8.11.0",
+    "prettier": "^3.3.0"
+  }
+}
